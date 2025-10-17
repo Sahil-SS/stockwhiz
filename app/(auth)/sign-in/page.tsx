@@ -5,6 +5,9 @@ import { useForm } from "react-hook-form";
 import InputField from "@/components/forms/InputField";
 import { Button } from "@/components/ui/button";
 import FooterLink from "@/components/forms/FooterLink";
+import { signInWithEmail } from "@/lib/actions/auth.actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type SignInFormData = {
   email: string;
@@ -12,6 +15,7 @@ type SignInFormData = {
 };
 
 const SignIn = () => {
+  const router=useRouter();
   const {
     register,
     handleSubmit,
@@ -28,8 +32,13 @@ const SignIn = () => {
     try {
       console.log("Sign in data:", data);
       // call your sign-in API here
+            const result = await signInWithEmail(data);
+            if (result.success) router.push("/");
     } catch (err) {
       console.error(err);
+      toast.error("Sign In Failed. Please try again.", {
+              description: "An error occurred during sign In.",
+            });
     }
   };
 
