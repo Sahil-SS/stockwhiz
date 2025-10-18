@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// At the top of the file
+// @ts-expect-error
 "use client";
 
 import { useState } from "react";
