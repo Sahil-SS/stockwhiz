@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// At the top of the file
-// @ts-expect-error
 "use client";
 
 import { useState } from "react";
@@ -40,7 +38,12 @@ interface CountrySelectorComponentProps {
 const CountrySelectComponent = ({ value, onChange }: CountrySelectorComponentProps) => {
   const [open, setOpen] = useState(false);
 
-  const countries: CountryData[] = countryList().getData();
+  const countries: CountryData[] =
+    Array.isArray(countryList)
+      ? (countryList as CountryData[])
+      : typeof countryList === "function"
+      ? (countryList as any)().getData()
+      : ((countryList as any).getData?.() ?? []);
 
   // Helper function to get flag emoji
   const getFlagEmoji = (countryCode: string) => {
